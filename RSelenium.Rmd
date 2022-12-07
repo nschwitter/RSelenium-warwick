@@ -31,7 +31,7 @@ spacejamrevhtml <- read_html(url)
 
 ## Excursus: HTML and CSS
 
-For web scraping, we make use of the fact that web pages follow a standardised structure. We can tell R exactly which element of this structure we want to collect. 
+For web-scraping, we make use of the fact that web pages follow a standardised structure. We can tell R exactly which element of this structure we want to collect. 
 
 Web pages have a head and a body. HTML documents consist of a tree of elements and text. Inside the body of a HTML page, tags can specify the elements to be displayed. 
 Examples:
@@ -40,15 +40,19 @@ Examples:
 
 `<p>This is a paragraph.</p><p>And this is the next.</p>`
 
-In addition, HTML attributes can provide additional information about HTML elements. All elements can have none or multiple attributes. Attributes are included in the starting tag and come as name-value-pairs (attributename="attributevalue"). We often need to use attributes to specify what exactly we want to scrape. An example of an attribute are **classes**. They specify a class for an HTML element. Multiple HTML elements can share the same class. We often encounter classes because they are frequently used for consistent formatting of similar content. 
+In addition, HTML attributes can provide additional information about HTML elements. Attributes are included in the starting tag and come as name-value-pairs (attributename="attributevalue"). We often need to use attributes to specify what exactly we want to scrape. An example of an attribute are **classes**. They specify a class for an HTML element. Multiple HTML elements can share the same class. We often encounter classes because they are frequently used for consistent formatting of similar content. 
 
-Example: `<div class="container">This is the text within the div of class container.</div> `
+Example: `<p class="definitions">This is the text within the p of class definitions.</p> `
 
 For an overview of further attributes, check [W3Schools](https://www.w3schools.com/html/html_attributes.asp).
 
-How can we find the tags and attributes of the information we are interested in? Through our browser, we can look at the HTML source code of any website and also inspect specific elements. There are also tools to make our life easier.  ***SelectorGadget*** is a useful, open source JavaScript bookmarklet that allows you to interactively figure out what CSS selector you need to extract part of the page.
+How can we specify the tags and attributes of the information we are interested in? We use CSS selectors. CSS selectors are pattern matching rules which are originally used to determine which style and formatting rules apply to which elements. 
 
-Check out its [webpage](https://selectorgadget.com/) to get it. To use SelectorGadget, you click on the element that you want to select and iteratively select and de-select elements. SelectorGadget will make a guess at what CSS selector you might want.
+Examples: `p` refers to all paragraphs on a website. `.definitions` refers to all elements with the class definitions on a website. 
+
+To learn more about CSS selectors, check [W3Schools](https://www.w3schools.com/cssref/css_selectors.php).
+
+We can find the relevant element tags and attributes through our browser, by looking at the HTML source code of any website and by inspecting specific elements. There are also tools to make our life easier like ***SelectorGadget*** (check out its [webpage](https://selectorgadget.com/)). 
 
 
 # The limits of rvest
@@ -80,7 +84,7 @@ We now load in the `RSelenium` package and start with the setup of our driver. F
 
 ```{r}
 library(RSelenium)
-driver <- rsDriver(browser = "chrome",chromever = "108.0.5359.71",port = 4448L)
+driver <- rsDriver(browser = "chrome",chromever = "108.0.5359.71",port = 4444L)
 browser <- driver$client
 ```
 
@@ -98,7 +102,7 @@ load_button$clickElement()
 Sys.sleep(2) 
 ```
 
-It is a little bit like magic: The browser clicked the button! We need to repeat this now. We know that 290 reviews have been written and 25 are displayed per page. Thus, there are 12 pages with information. We need to click the button 10 more times and can do so in a simple loop. Look aat your browser and watch the magic happen!
+It is a little bit like magic: The browser clicked the button! We need to repeat this now. We know that 290 reviews have been written and 25 are displayed per page. Thus, there are 12 pages with information. We need to click the button 10 more times and can do so in a simple loop. Look at your browser and watch the magic happen!
 
 ```{r}
 for (i in 1:10){
